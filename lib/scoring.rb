@@ -42,6 +42,38 @@ module Scrabble
     end
 
     def self.highest_score_from(array_of_words)
+      return nil if array_of_words.length == 0
+
+      # Loop through all the words
+      #   if the current word is better than the best we've seen
+      #     best word = current word
+      #   end
+      # end
+      best_word = array_of_words.first
+      array_of_words.each do |word|
+        if score(word) > score(best_word)
+          best_word = word
+        elsif score(word) == score(best_word)
+          best_word = break_tie(best_word, word)
+        end
+      end
+
+      return best_word
+    end
+
+    def self.break_tie(incumbent, challenger)
+      if incumbent.length == 7
+        return incumbent
+
+      elsif challenger.length == 7
+        return challenger
+
+      elsif challenger.length < incumbent.length
+        return challenger
+
+      else
+        return incumbent
+      end
     end
   end
 end

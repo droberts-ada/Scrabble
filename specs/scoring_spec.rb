@@ -42,21 +42,65 @@ describe 'Scoring' do
 
   describe 'highest_score_from' do
     it 'returns nil if no words were passed' do
+      # Arrange
+      words = []
+
+      # Act
+      result = Scrabble::Scoring.highest_score_from(words)
+
+      # Assert
+      result.must_be_nil
     end
 
     it 'returns the only word in a length-1 array' do
+      words = ['lizard']
+
+      result = Scrabble::Scoring.highest_score_from(words)
+
+      result.must_equal 'lizard'
     end
 
     it 'returns the highest word if there are two words' do
+      words = ['pig', 'lizard']
+      expected_winner = 'lizard'
+
+      result = Scrabble::Scoring.highest_score_from(words)
+      result.must_equal expected_winner
+
+      result = Scrabble::Scoring.highest_score_from(words.reverse)
+      result.must_equal expected_winner
     end
 
     it 'if tied, prefer a word with 7 letters' do
+      words = ['zqzqzq', 'oratory']
+      expected_winner = 'oratory'
+
+      result = Scrabble::Scoring.highest_score_from(words)
+      result.must_equal expected_winner
+
+      result = Scrabble::Scoring.highest_score_from(words.reverse)
+      result.must_equal expected_winner
     end
 
     it 'if tied and no word has 7 letters, prefers the word with fewer letters' do
+      words = ['ada', 'ap']
+      expected_winner = 'ap'
+
+      result = Scrabble::Scoring.highest_score_from(words)
+      result.must_equal expected_winner
+
+      result = Scrabble::Scoring.highest_score_from(words.reverse)
+      result.must_equal expected_winner
     end
 
     it 'returns the first word of a tie with same letter count' do
+      words = ['aaa', 'eee']
+
+      result = Scrabble::Scoring.highest_score_from(words)
+      result.must_equal words.first
+
+      result = Scrabble::Scoring.highest_score_from(words.reverse)
+      result.must_equal words.last
     end
   end
 end
